@@ -1,0 +1,52 @@
+extends layout
+block content
+    h1= title
+
+    if (toShow == null)
+        h2 No instance to delete
+    else
+        - let heroineid = toShow._id
+        - let heroinename = toShow.heroine_name
+        - let heroinecost = toShow.heroine_cost
+        - let heroinecolor = toShow.heroine_color
+        - let actionid = "/resource/heroines/" + heroineid
+        script let actionid = "#{actionid}"
+        div
+            div.row
+                div(class='heroineAttr mr-3') Heroine ID is:
+                div #{heroineid}
+            div.row
+                div(class='heroineAttr mr-3') Heroine Name is:
+                div #{heroinename}
+            div.row
+                div(class='heroineAttr mr-3') Heroine Color is:
+                div #{heroinecolor}
+            div.row
+                div(class='heroineAttr mr-3') Heroine Cost is:
+                div #{heroinecost}
+
+        button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
+        button(class="btn btn-secondary m-2" onclick="cancel()") Cancel
+
+    script.
+        function cancel() {
+            // Go back to the home page for the heroine collection
+            window.location.href='/heroines'
+        }
+    script.
+        function deleteOnid() {
+            console.log("starting delete")
+            // delete first
+            fetch(actionid, {
+                method: 'DELETE' // Don't need a body for the delete
+            }).then((resp) => {
+                return resp.json(); // or resp.text() or whatever the server sends
+            }).then((body) => {
+                alert("Delete succeded")
+                window.location.href='/heroines'
+                // TODO handle body
+            }).catch((error) => {
+                // TODO handle error
+                alert("Delete failed " + error )
+            });
+        }

@@ -1,0 +1,20 @@
+extends layout
+block content
+  h1= title
+  - let heroineid = toShow._id
+  - let heroinename = toShow.heroine_name
+  - let heroinecost = toShow.heroine_cost
+  - let heroinecolor = toShow.heroine_color
+  div
+    div.row
+      div(class='heroineAttr mr-3') Heroine ID is:
+      div #{heroineid}
+    div.row
+      div(class='heroineAttr mr-3') Heroine Name is:
+      div #{heroinename}
+    div.row
+      div(class='heroineAttr mr-3') Heroine Color is:
+      div #{heroinecolor}
+    div.row
+      div(class='heroineAttr mr-3') Heroine Cost is:
+      div #{heroinecost}

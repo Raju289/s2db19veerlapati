@@ -1,0 +1,41 @@
+extends layout
+block content
+  h1= title
+
+  - let heroineid = toShow._id
+  - let heroine_name = toShow.heroine_name
+  - let heroine_cost = toShow.heroine_cost
+  - let heroine_color = toShow.heroine_color
+  div.row(class='mb-2')
+    div.mr-1 ID is
+    div #{heroineid}
+  - let actionid = "/resource/heroines/" + heroineid
+  form(id='HeroineForm', action= actionid, method="PUT")
+    div.form-group
+      label.heroineAttr(for='heroine_name') Heroine name
+      input#heroine_name(type='text' name='heroine_name', value= heroine_name )
+    div.form-group
+      label.heroineAttr(for='heroine_color') Heroine color
+      input#heroine_color(type='text' name='heroine_color', value= heroine_color )
+    div.form-group
+      label.heroineAttr(for='heroine_cost') Heroine cost
+      input#heroine_cost(type='number' name='heroine_cost', value= heroine_cost )
+    input(type="submit")
+
+  script.
+    document.forms['HeroineForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      // TODO do something here to show user that form is being submitted
+      fetch(event.target.action, {
+        method: 'PUT',
+        body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+      }).then((resp) => {
+        return resp.json(); // or resp.text() or whatever the server sends
+      }).then((body) => {
+        alert("Update succeded")
+        // TODO handle body
+      }).catch((error) => {
+        // TODO handle error
+      alert("Update failed " + error )
+      });
+    });

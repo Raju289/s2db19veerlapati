@@ -1,0 +1,31 @@
+extends layout
+block content
+  h1= title
+  form(id='HeroineForm', action="/resource/heroines", method="POST")
+    div.form-group
+      label.heroineAttr(for='heroine_name') Heroine name
+      input#heroine_name(type='text', name='heroine_name')
+    div.form-group
+      label.heroineAttr(for='heroine_color') Heroine color
+      input#heroine_color(type='text', name='heroine_color')
+    div.form-group
+      label.heroineAttr(for='heroine_cost') Heroine cost
+      input#heroine_cost(type='number', name='heroine_cost')
+    input(type="submit")
+  script.
+    document.forms['HeroineForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      // TODO do something here to show user that form is being submitted
+      fetch(event.target.action, {
+        method: 'POST',
+        body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+      }).then((resp) => {
+        return resp.json(); // or resp.text() or whatever the server sends
+      }).then((body) => {
+        alert("Save succeded")
+        // TODO handle body
+      }).catch((error) => {
+        // TODO handle error
+        alert("Save failed " + error )
+      });
+    });
