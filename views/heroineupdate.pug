@@ -1,6 +1,7 @@
 extends layout
 block content
   h1= title
+  
 
   - let heroineid = toShow._id
   - let heroine_name = toShow.heroine_name
@@ -20,7 +21,7 @@ block content
     div.form-group
       label.heroineAttr(for='heroine_cost') Heroine cost
       input#heroine_cost(type='number' name='heroine_cost', value= heroine_cost )
-    input(type="submit")
+    input(type="submit",class='btn btn-primary')
 
   script.
     document.forms['HeroineForm'].addEventListener('submit', (event) => {
