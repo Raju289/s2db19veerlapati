@@ -1,25 +1,11 @@
 var Heroine = require('../models/heroine');
 // List of all heroines
-exports.heroine_list = async function (req, res) {
-    try {
-        theHeroines = await Heroine.find();
-        res.send(theHeroines);
-    }
-    catch (err) {
-        res.status(500);
-        res.send(`{"error": ${err}}`);
-    }
-};
+exports.heroine_list = function(req, res) { 
+    res.send('NOT IMPLEMENTED: Heroine list'); 
+};  
 // for a specific heroine.
-exports.heroine_detail = async function (req, res) {
-    console.log("detail" + req.params.id)
-    try {
-        result = await Heroine.findById(req.params.id)
-        res.send(result)
-    } catch (error) {
-        res.status(500)
-        res.send(`{"error": document for id ${req.params.id} not found`);
-    }
+exports.heroine_detail = function(req, res) { 
+    res.send('NOT IMPLEMENTED: Heroine detail: ' + req.params.id); 
 };
 // Handle Heroine create on POST.
 exports.heroine_create_post = async function (req, res) {
@@ -86,6 +72,17 @@ exports.heroine_view_all_Page = async function (req, res) {
 };
 
 // Handle a show one view with id specified by query
+exports.heroine_detail = async function(req, res) { 
+    console.log("detail"  + req.params.id) 
+    try { 
+        result = await Heroine.findById( req.params.id) 
+        res.send(result) 
+    } catch (error) { 
+        res.status(500) 
+        res.send(`{"error": document for id ${req.params.id} not found`); 
+    } 
+}; 
+
 exports.heroine_view_one_Page = async function (req, res) {
     console.log("single view for id " + req.query.id)
     try {

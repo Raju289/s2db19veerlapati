@@ -1,7 +1,9 @@
 extends layout
 block content
   h1= title
-  
+  if (toShow == null)
+        h2 No instance to update
+    
 
   - let heroineid = toShow._id
   - let heroine_name = toShow.heroine_name
@@ -13,15 +15,15 @@ block content
   - let actionid = "/resource/heroines/" + heroineid
   form(id='HeroineForm', action= actionid, method="PUT")
     div.form-group
-      label.heroineAttr(for='heroine_name') Heroine name
-      input#heroine_name(type='text' name='heroine_name', value= heroine_name )
+      label.heroineAttr(for='heroine_name' class='label-type') Heroine name
+      input#heroine_name(type='text'  class='form-control' name='heroine_name', value= heroine_name )
     div.form-group
-      label.heroineAttr(for='heroine_color') Heroine color
-      input#heroine_color(type='text' name='heroine_color', value= heroine_color )
+      label.heroineAttr(for='heroine_color' class='label-type') Heroine color
+      input#heroine_color(type='text'  class='form-control' name='heroine_color', value= heroine_color )
     div.form-group
-      label.heroineAttr(for='heroine_cost') Heroine cost
-      input#heroine_cost(type='number' name='heroine_cost', value= heroine_cost )
-    input(type="submit",class='btn btn-primary')
+      label.heroineAttr(for='heroine_cost' class='label-type') Heroine cost
+      input#heroine_cost(type='number'  class='form-control' name='heroine_cost', value= heroine_cost )
+    input(type="submit" class='btn btn-sm btn-success text-center')
 
   script.
     document.forms['HeroineForm'].addEventListener('submit', (event) => {

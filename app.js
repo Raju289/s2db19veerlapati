@@ -3,13 +3,29 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var passport = require('passport'); 
+var LocalStrategy = require('passport-local').Strategy;
+passport.use(new LocalStrategy( 
+  function(username, password, done) { 
+    Account.findOne({ username: username }, function (err, user) { 
+      if (err) { return done(err); } 
+      if (!user) { 
+        return done(null, false, { message: 'Incorrect username.' }); 
+      } 
+      if (!user.validPassword(password)) { 
+        return done(null, false, { message: 'Incorrect password.' }); 
+      } 
+      return done(null, user); 
+    }); 
+  }));
+var mongoose = require('mongoose');
+var Canteen = require("./models/heroine");
 const connectionString = process.env.MONGO_CON;
 mongoose = require('mongoose');
 mongoose.connect(connectionString,
   { useNewUrlParser: true, useUnifiedTopology: true });
 
-var Costume = require("./models/costume");
+
 var Heroine = require("./models/heroine");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -27,6 +43,13 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(require('express-session')({ 
+  secret: 'keyboard cat', 
+  resave: false, 
+  saveUninitialized: false 
+})); 
+app.use(passport.initialize()); 
+app.use(passport.session()); 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
@@ -36,6 +59,10 @@ app.use('/addmods', addmodsRouter);
 app.use('/selector', selectorRouter)
 app.use('/resource', resourceRouter);
 
+var Account =require('./models/account'); 
+passport.use(new LocalStrategy(Account.authenticate())); 
+passport.serializeUser(Account.serializeUser()); 
+passport.deserializeUser(Account.deserializeUser()); 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -56,32 +83,6 @@ module.exports = app;
 
 // We can seed the collection if needed on server start
 async function recreateDB() {
-  // Delete everything
-  await Costume.deleteMany();
-
-  let instance1 = new Costume({ costume_type: "ghostrider", size: 'large', cost: 25.4 });
-  instance1.save(function (err, doc) {
-    if (err) return console.error(err);
-    console.log("First object saved in Costume")
-  });
-
-  let instance2 = new Costume({ costume_type: "spiderman", size: 'small', cost: 16.5 });
-  instance2.save(function (err, doc) {
-    if (err) return console.error(err);
-    console.log("Second object saved in Costume")
-  });
-
-  let instance3 = new Costume({ costume_type: "batman", size: 'medium', cost: 32.4 });
-  instance3.save(function (err, doc) {
-    if (err) return console.error(err);
-    console.log("Third object saved in Costume")
-  });
-
-  let instance4 = new Costume({ costume_type: "wonderwomen", size: 'extralarge', cost: 43.6 });
-  instance4.save(function (err, doc) {
-    if (err) return console.error(err);
-    console.log("Fourth object saved in Costume")
-  });
 
 // Delete everything in Heroine
   await Heroine.deleteMany();

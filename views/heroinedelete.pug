@@ -2,9 +2,10 @@ extends layout
 block content
     h1= title
 
-    if (toShow == null)
-        h2 No instance to delete
-    else
+    if (toShow == null) 
+      h2 No instance to delete 
+    else 
+    
         - let heroineid = toShow._id
         - let heroinename = toShow.heroine_name
         - let heroinecost = toShow.heroine_cost
